@@ -7,7 +7,7 @@ module.exports ={
     devServer:{
         host:'localhost',
         // default port 8080
-        port:8080,
+        port:8081,
         // proxy代理
         // 这样就像访问自己接口
         // 实际是访问target的接口
@@ -15,7 +15,7 @@ module.exports ={
             // 当访问的是/api
             '/api':{
                 // proxy代理目标是慕课网
-                target:'https://www.imooc.com',
+                target:'http://mall-pre.springboot.cn',
                 // 是否更改host header更改为target
                 changeOrigin:true,
                 pathRewrite:{

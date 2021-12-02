@@ -7,6 +7,7 @@ import App from './App.vue'
 // 当是自定义的js文件 前面一定要加相对路径
 // 否则会去node_module里面找npm包
 import env from './env'
+import Axios from 'axios'
 
 // 根据前端前端的跨域方式做调整 设置请求的根路径
 // 这次用了接口代理 /a/b =>/api/a/b
@@ -34,7 +35,7 @@ axios.interceptors.response.use(function(response){
   }
 })
 
-Vue.use(axios,VueAxios)
+Vue.use(VueAxios,axios)
 Vue.config.productionTip = false
 
 new Vue({

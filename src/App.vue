@@ -6,7 +6,6 @@
 
 
 <script>
-import storage from './storage/index.js'
 export default {
   data(){
     return {
@@ -14,8 +13,12 @@ export default {
     }
   },
   mounted(){
-    console.log( storage.getItem("a",'user'))
-    // console.log(storage.getStorage())
   }
 }
 </script>
+
+<style lang="scss">
+// css导入要前面加入@
+@import './assets/scss/reset.scss';
+@import './assets/scss/config.scss';
+</style>
