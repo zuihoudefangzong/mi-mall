@@ -23,6 +23,7 @@ const routes = [
     // 加载的组件
     component: Home,
     // 重定向
+    redirect:'/index',
     children:[
       {
         path:'/detail:id',

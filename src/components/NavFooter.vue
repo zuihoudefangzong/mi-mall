@@ -23,9 +23,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/scss/base.scss';
 .footer {
     height: 234px;
     border-top: 4px solid #f60;
+    background-color: #333;
     color: #999;
     font-size: 16px;
     text-align: center;

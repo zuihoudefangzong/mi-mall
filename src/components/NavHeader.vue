@@ -235,6 +235,7 @@ export default {
                         line-height: 12px;
                         text-align: center;
                         z-index: 10;
+                        background-color: #fff;
                         .product {
                             // 每个分割线所要定位的祖先元素
                             // 就是每个li
