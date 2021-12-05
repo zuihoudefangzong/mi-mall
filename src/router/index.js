@@ -36,7 +36,7 @@ const routes = [
         component:Index,
       },
       {
-        path:'/product:id',
+        path:'/product/:id',
         name:'product',
         component:Product,
       }
