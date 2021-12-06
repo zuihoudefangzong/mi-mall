@@ -100,6 +100,7 @@ export default {
             this.axios.get('/products',{
                 // 传参
                 params:{
+                    // 该id是后台给的 查询头部组件手机列表
                     categoryId:'100012'
                 }
             }).then((res)=>{
@@ -230,7 +231,7 @@ export default {
                         opacity: 0;
                         // 阴影
                         box-shadow: 0px 7px 6px 0px rgba(0,0,0,0.11);
-                        border-radius: 8px;
+                        // border-radius: 8px;
                         font-size: 12px;
                         line-height: 12px;
                         text-align: center;

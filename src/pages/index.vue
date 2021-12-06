@@ -72,10 +72,48 @@
 
             <!-- 广告位的开始 -->
             <div class="ads-box">
-
+                <a :href="'/#/product/'+item.id" v-for="(item,index) in adsList" :key="index">
+                    <img :src="item.img" alt="">
+                </a>
             </div>
-            <div class="banner"></div>
-            <div class="product-box"></div>
+            <!-- 中间大图 -->
+            <div class="banner">
+                <a href="/#/product/30">
+                    <img src="/imgs/banner-1.png" alt="">                
+                </a>
+            </div>
+        </div>
+        <!-- 主页商品列表开始 -->
+        <div class="product-box">
+            <div class="container">
+            <!-- 商品主标题 -->
+            <h2>手机</h2>
+            <div class="wrapper">
+                <!-- 左边大广告 -->
+                <div class="banner-left">
+                    <a href="/#/product/35">
+                        <img src="/imgs/mix-alpha.jpg" alt="">
+                    </a>
+                </div>
+                <!-- 右边的列表 -->
+                <div class="list-box">
+                    <div class="list" v-for="(arr,i) in phoneList" :key="i">
+                        <div class="item" v-for="(item,j) in arr" :key="j">
+                            <!-- 先展示把索引奇数当做新平 -->
+                            <span :class="{'new-pro':j%2==0}">新品</span>
+                            <div class="item-img">
+                                <img :src="item.mainImage" alt="">
+                            </div>
+                            <div class="item-info">
+                                <h3>{{item.name}}</h3>
+                                <p>{{item.subtitle}}</p>
+                                <p class="price">{{item.price}}元</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
         </div>
         <service-bar></service-bar>
     </div>
@@ -109,7 +147,7 @@ export default {
                     shadow: true,
                     // 阴影的距离和缩放比列
                     shadowOffset: 100,
-                    shadowScale: 0.6
+                    shadowScale: 0,
                 },
                 // 轮播指示器的指定
                 pagination:{
@@ -158,9 +196,35 @@ export default {
                 [0,0,0,0],
                 [0,0,0,0],
                 [0,0,0,0],
-            ]
+            ],
+            // 主页4张广告图
+            adsList:[
+                {id:33,img:'/imgs/ads/ads-1.png'},
+                {id:48,img:'/imgs/ads/ads-2.jpg'},
+                {id:45,img:'/imgs/ads/ads-3.png'},
+                {id:47,img:'/imgs/ads/ads-4.jpg'},
+            ],
+            // 手机商品列表
+            phoneList:[],
         }
     },
+    mounted(){
+        this.init();
+    },
+    methods:{
+        init(){
+            this.axios.get("/products",{
+                parms:{
+                    categoryId:'100012',
+                    // 只要8条
+                    pageSize:14,
+                }
+            }).then((res)=>{
+                // 分割成一个二维数组,但原数组没变,slice
+                this.phoneList= [res.list.slice(4,8),res.list.slice(4,8)];
+            })
+        }
+    }
 }
 </script>
 <style lang="scss" scoped>
@@ -175,7 +239,7 @@ export default {
             position: absolute;
             width: 264px;
             height: 451px;
-            z-index: 999;
+            z-index: 9;
             padding: 26px 0;
             box-sizing: border-box;
             // background-color: #55585a;
@@ -214,7 +278,7 @@ export default {
                         top: 0;
                         left: 264px;
                         width: 962px;
-                        height: 451px;
+                        height: 450px;
                         background: $colorG;  
                         border: 1px solid $colorH;  
                         ul{
@@ -257,7 +321,107 @@ export default {
             }
         }
     }
-
+    // 广告位图片
+    .ads-box {
+        @include flex();
+        margin-top: 14px;
+        margin-bottom: 31px;
+        a{
+            width:296px;
+            height: 167px;
+        }
+    }
+    // 大图
+    .banner{
+        margin-bottom: 50px;
+    }
+    // 手机商品
+    .product-box {
+        background-color: $colorJ;
+        padding: 30px 0 50px;
+        >h2 {
+            font-size: $fontF;
+            height: 21px;
+            line-height: 21px;
+            color: $colorB;
+            margin-bottom: 20px;
+        }
+        .wrapper{
+            display: flex;
+            
+            .banner-left{
+                img {
+                    width: 224px;
+                    height: 619px;
+                }
+                margin-right: 16px;
+            }
+            .list-box {
+                .list {
+                    @include flex();
+                    // 安全距离1226px-(224px+15px)
+                    width: 986px;
+                    // 只有第一行有margin-bottom
+                    // 或者最后一行没有margin-bottom
+                    &:first-child{
+                        margin-bottom: 14px;
+                    }
+                    .item {
+                        width: 236px;
+                        height: 302px;
+                        background-color: $colorG;
+                        text-align: center;
+                        span {
+                            display: inline-block;
+                            width: 67px;
+                            height: 24px;
+                            font-size: 14px;
+                            line-height: 24px;
+                            color: $colorG;
+                            &.new-pro {
+                                // 有new-pro的class 显示不同的background-color
+                                background-color: #7ecf68;
+                            }
+                            &.kill-pro{
+                                background-color: #e82626;
+                            }
+                        }
+                        .item-img {
+                            img {
+                                height: 195px;
+                                width: 100%;
+                            }
+                        }
+                        .item-info {
+                            h3 {
+                               font-size:$colorJ;
+                               line-height: $colorJ;
+                               color:$colorB; 
+                               font-weight: bold;
+                            }
+                            p{
+                                color: $colorD;
+                                line-height: 13px;
+                                margin: 6px auto 13px;
+                            }
+                            .price {
+                                color: #f20a0a;
+                                font-size: $fontJ;
+                                font-weight: bold;
+                                cursor: pointer;
+                                &::after{
+                                    @include bgImg(22px,22px,'/imgs/icon-cart-hover.png');
+                                    content: '';
+                                    vertical-align: middle;
+                                    margin-left: 5px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 </style>
