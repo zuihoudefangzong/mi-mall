@@ -21,4 +21,5 @@ export default {
 // css导入要前面加入@
 @import './assets/scss/reset.scss';
 @import './assets/scss/config.scss';
+@import './assets/scss/button.scss';
 </style>
