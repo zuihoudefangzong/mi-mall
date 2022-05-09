@@ -41,12 +41,21 @@
         <h2>60帧超慢动作摄影<br/>慢慢回味每一瞬间的精彩</h2>
         <p>后置960帧电影般超慢动作视频，将眨眼间的美妙展现得淋漓尽致！<br/>更能AI 精准分析视频内容，15个场景智能匹配背景音效。</p>
         <!-- video-bg是放了一张背景图片 -->
-        <div class="video-bg"></div>
-        <div class="video-box">
+        <div class="video-bg" @click="playVideo"></div>
+        <!-- video-wrapper 遮罩层和video -->
+        <div class="video-box"  v-show="visibleVideo">
           <!-- 视频播放时候的遮罩层div.overlay -->
           <div class="overlay"></div>
-          <div class="video">
-            <video src="/imgs/product/video.mp4" controls></video>
+          <div class="video" :class="visibleVideo"> 
+            <!-- 关闭按钮 -->
+            <div class="icon-close"  @click="pauseVideo"></div>
+            <video
+              src="/imgs/product/video.mp4"
+              muted autoplay
+              controls
+              ref="video"
+            >
+            </video>
           </div>
         </div>
       </div>
@@ -62,6 +71,7 @@ export default {
   components: { Swiper, SwiperSlide, ProductParam },
   data() {
     return {
+      // 商品信息
       product: {},
       swiperOption: {
         autoplay:true,
@@ -72,7 +82,9 @@ export default {
           el: '.swiper-pagination',
           clickable: true,
         }
-      }
+      },
+      // 是否显示Video
+      visibleVideo: '',
     }
   },
   mounted(){
@@ -85,6 +97,20 @@ export default {
         this.product = res;
       })
     },
+    playVideo() {
+      this.visibleVideo =  'slideDown'
+    },
+    pauseVideo() {
+      this.$refs.video.pause()
+      this.visibleVideo = 'slideUp'
+      setTimeout(() => {
+        this.visibleVideo = ''
+      }, 600);
+    },
+    buy(){
+      let id = this.$route.params.id;
+      this.$router.push(`/detail/${id}`);
+    },
   }
 }
 </script>
@@ -93,6 +119,16 @@ export default {
 @import '../assets/scss/config.scss';
 @import '../assets/scss/base.scss';
 @import '../assets/scss/mixin.scss';
+
+@keyframes slideDown{
+  from{ top:-50%; opacity:0;}
+  to{ top:50%; opacity:1;}
+}
+
+@keyframes slideUp{
+  from{ top:50%; opacity:1; }
+  to{ top:-50%; opacity:0;}
+}
 .product-container {
   border-top: 1px solid $colorH;
   .content {
@@ -178,7 +214,7 @@ export default {
           @include position(fixed);
           background-color:#333333;
           opacity: .4;
-          z-index: 2;
+          z-index: 1;
         }
         .video {
           position:fixed;
@@ -187,10 +223,29 @@ export default {
           transform:translate(-50%,-50%);
           width:1000px;
           height:536px;
-          z-index: 3;
+          z-index: 1;
           // video标签
+          opacity:1;
+          &.slideDown{
+            animation:slideDown .6s linear;
+            top:50%;
+          }
+          &.slideUp{
+            animation:slideUp .6s linear;
+            transition: all .6s;
+          }
+          .icon-close{
+            position:absolute;
+            top:20px;
+            right:20px;
+            @include bgImg(20px,20px,'/imgs/icon-close.png');
+            cursor:pointer;
+            z-index:11;
+          }
           video {
             width: 100%; height: 100%;
+            object-fit:cover;
+            outline:none;
           }
         }
       }
