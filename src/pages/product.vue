@@ -3,7 +3,7 @@
     <product-param :title="product.name">
       <!-- 具名插槽 -->
       <template v-slot:buy>
-        <button class="btn">立即购买</button>
+        <button class="btn" @click="buy">立即购买</button>
       </template>
     </product-param>
     <div class="content">
