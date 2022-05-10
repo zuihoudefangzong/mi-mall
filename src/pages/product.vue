@@ -26,14 +26,14 @@
       <div class="item-bg-2"></div>
       <div class="item-bg-3"></div>
       <div class="item-swiper">
-        <!-- <swiper :options="swiperOption">
+        <swiper :options="swiperOption">
             <swiper-slide><img src="/imgs/product/gallery-2.png" alt=""></swiper-slide>
             <swiper-slide><img src="/imgs/product/gallery-3.png" alt=""></swiper-slide>
             <swiper-slide><img src="/imgs/product/gallery-4.png" alt=""></swiper-slide>
             <swiper-slide><img src="/imgs/product/gallery-5.jpg" alt=""></swiper-slide>
             <swiper-slide><img src="/imgs/product/gallery-6.jpg" alt=""></swiper-slide>
             <div class="swiper-pagination"  slot="pagination"></div>
-        </swiper> -->
+        </swiper>
         <p class="desc">小米8 AI变焦双摄拍摄</p>
       </div>
 
@@ -65,11 +65,11 @@
 
 <script>
 import ProductParam from './../components/ProductParam.vue'
-import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
+import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
 export default {
   name: 'Product',
-  components: { Swiper, SwiperSlide, ProductParam },
+  components: { swiper, swiperSlide, ProductParam },
   data() {
     return {
       // 商品信息
@@ -91,15 +91,13 @@ export default {
       },
       // swiperOption轮播图的选项
       swiperOption:{
-        // 自动播放
         autoplay:true,
-        // 当点到最后一页 还能点击下一页
-        loop:true,
-        // 轮播指示器的指定
-        pagination:{
-          el:'.swiper-pagination',
-          // 为true时，点击分页器的指示点分页器会控制Swiper切换。
-          clickable: true,
+        slidesPerView:3,
+        spaceBetween: 30,
+        freeMode: true,
+        pagination: {
+          el: '.swiper-pagination',
+          clickable :true,
         }
       },
       // 是否显示Video
