@@ -28,7 +28,7 @@ axios.interceptors.response.use(function(response){
   }else if(res.status == 10){
     // 后端定义的失败是10
     // 跳转到登录login页面
-    window.location.href='/#/login';
+    // window.location.href='/#/login';
   }else{
     // 真的报错了
     alert(res.mes);

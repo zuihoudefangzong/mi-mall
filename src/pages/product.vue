@@ -27,7 +27,7 @@
       <div class="item-bg-3"></div>
       <div class="item-swiper">
         <!-- <swiper :options="swiperOption">
-            <swiper-slide><img src="//imgs/product/gallery-2.png" alt=""></swiper-slide>
+            <swiper-slide><img src="/imgs/product/gallery-2.png" alt=""></swiper-slide>
             <swiper-slide><img src="/imgs/product/gallery-3.png" alt=""></swiper-slide>
             <swiper-slide><img src="/imgs/product/gallery-4.png" alt=""></swiper-slide>
             <swiper-slide><img src="/imgs/product/gallery-5.jpg" alt=""></swiper-slide>
@@ -66,20 +66,39 @@
 <script>
 import ProductParam from './../components/ProductParam.vue'
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
+import 'swiper/dist/css/swiper.css'
 export default {
   name: 'Product',
   components: { Swiper, SwiperSlide, ProductParam },
   data() {
     return {
       // 商品信息
-      product: {},
-      swiperOption: {
+      product: {
+        id: 45,
+        categoryId: 100012,
+        name: "红米Note 7",
+        subtitle: "4800万拍照千元机 / 品质“小金刚”",
+        mainImage: "https://cdn.cnbj0.fds.api.mi-img.com/b2c-shopapi-pms/pms_1551869450.61563110.jpg",
+        subImages: null,
+        detail: null,
+        price: 999,
+        stock: 9999999,
+        status: 1,
+        createTime: "2019-10-14 21:06:38",
+        updateTime: "2019-10-14 21:06:42",
+        imageHost: "http://img.springboot.cn",
+        parentCategoryId: 100002
+      },
+      // swiperOption轮播图的选项
+      swiperOption:{
+        // 自动播放
         autoplay:true,
-        slidesPerView:3,
-        spaceBetween: 30,
-        freeMode: true,
-        pagination: {
-          el: '.swiper-pagination',
+        // 当点到最后一页 还能点击下一页
+        loop:true,
+        // 轮播指示器的指定
+        pagination:{
+          el:'.swiper-pagination',
+          // 为true时，点击分页器的指示点分页器会控制Swiper切换。
           clickable: true,
         }
       },
@@ -88,7 +107,7 @@ export default {
     }
   },
   mounted(){
-    this.getProductInfo();
+    // this.getProductInfo();
   },
   methods:{
     getProductInfo () {
@@ -96,6 +115,10 @@ export default {
       this.axios.get(`/products/${id}`).then((res)=>{
         this.product = res;
       })
+    },
+    buy(){
+      let id = this.$route.params.id;
+      this.$router.push(`/detail/${id}`);
     },
     playVideo() {
       this.visibleVideo =  'slideDown'
@@ -106,11 +129,7 @@ export default {
       setTimeout(() => {
         this.visibleVideo = ''
       }, 600);
-    },
-    buy(){
-      let id = this.$route.params.id;
-      this.$router.push(`/detail/${id}`);
-    },
+    }
   }
 }
 </script>

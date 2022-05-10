@@ -16,6 +16,7 @@ module.exports ={
             '/api':{
                 // proxy代理目标是慕课网
                 target:'http://mall-pre.springboot.cn',
+                // target:'http://mi.futurefe.com',
                 // 是否更改host header更改为target
                 changeOrigin:true,
                 pathRewrite:{

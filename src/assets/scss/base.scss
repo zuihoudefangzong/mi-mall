@@ -12,3 +12,10 @@ a{
         height: 100%;
     }
 }
+
+// 清除浮动float
+.clearfix::after {
+  display: block;
+  content: "";
+  clear: both;
+}

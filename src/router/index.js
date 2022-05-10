@@ -26,7 +26,7 @@ const routes = [
     redirect:'/index',
     children:[
       {
-        path:'/detail:id',
+        path:'/detail/:id',
         name:'detail',
         component:Detail,
       },
