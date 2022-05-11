@@ -1,122 +1,122 @@
 <template>
-    <div class="index">
-        <div class="container">
-            <div class="swiper-box">
-                <!-- 左边的菜单栏开始 -->
-                <div class="nav-menu">
-                    <ul class="menu-wrap">
-                        <li class="menu-item">
-                            <!-- javascript:;是防止用户点击的时候跳转了刷新页面 -->
-                            <a href="javascript:;">手机 电话卡</a>
-                            <div class="children">
-                                <!-- ul循环出6个 -->
-                                <ul v-for="item in menuList">
-                                    <li v-for="sub in item">
-                                        <a :href="sub?'/#/product/'+sub.id:'javascript:;'">
-                                            <img 
-                                            :src="sub?sub.img:'/imgs/item-box-1.png'"
-                                            alt="">
-                                            {{sub? sub.name:'小米CC9'}}
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="menu-item">
-                            <a href="javascript:;">电视 盒子</a>
-                            <!-- <div class="children"></div> -->
-                        </li>
-                        <li class="menu-item">
-                            <a href="javascript:;">笔记本 平板</a>
-                            <!-- <div class="children"></div> -->
-                        </li>
-                        <li class="menu-item">
-                            <a href="javascript:;">家电 排插</a>
-                            <!-- <div class="children"></div> -->
-                        </li>
-                        <li class="menu-item">
-                            <a href="javascript:;">出行 穿戴</a>
-                            <!-- <div class="children"></div> -->
-                        </li>
-                        <li class="menu-item">
-                            <a href="javascript:;">智能 路由器</a>
-                            <!-- <div class="children"></div> -->
-                        </li>
-                        <li class="menu-item">
-                            <a href="javascript:;">电源 配件</a>
-                            <!-- <div class="children"></div> -->
-                        </li>
-                        <li class="menu-item">
-                            <a href="javascript:;">生活 箱包</a>
-                            <!-- <div class="children"></div> -->
-                        </li>
-                    </ul>
+  <div class="index">
+    <div class="container">
+      <div class="swiper-box">
+        <!-- 左边的菜单栏开始 -->
+        <div class="nav-menu">
+            <ul class="menu-wrap">
+              <li class="menu-item">
+                <!-- javascript:;是防止用户点击的时候跳转了刷新页面 -->
+                <a href="javascript:;">手机 电话卡</a>
+                <div class="children">
+                    <!-- ul循环出6个 -->
+                  <ul v-for="item in menuList">
+                    <li v-for="sub in item">
+                      <a :href="sub?'/#/product/'+sub.id:'javascript:;'">
+                          <img 
+                          :src="sub?sub.img:'/imgs/item-box-1.png'"
+                          alt="">
+                          {{sub? sub.name:'小米CC9'}}
+                      </a>
+                    </li>
+                  </ul>
                 </div>
-
-                <!-- 开始轮播 swiper组件 -->
-                <swiper :options="swiperOption">
-                    <swiper-slide
-                    v-for="(item,index) in slideList" 
-                    :key="index">
-                        <a :href="'/#/product/'+item.id">
-                            <img :src="item.img">
-                        </a>
-                    </swiper-slide>
-                    <!-- 如果需要分页器(轮播指示器) 插槽方式 -->
-                    <div class="swiper-pagination" slot="pagination"></div>
-                    <!-- 如果需要导航按钮 插槽方式-->
-                    <div class="swiper-button-prev" slot="button-prev"></div>
-                    <div class="swiper-button-next" slot="button-next"></div> 
-                </swiper>
-            </div>
-
-            <!-- 广告位的开始 -->
-            <div class="ads-box">
-                <a :href="'/#/product/'+item.id" v-for="(item,index) in adsList" :key="index">
-                    <img :src="item.img" alt="">
-                </a>
-            </div>
-            <!-- 中间大图 -->
-            <div class="banner">
-                <a href="/#/product/30">
-                    <img src="/imgs/banner-1.png" alt="">                
-                </a>
-            </div>
+              </li>
+                <li class="menu-item">
+                    <a href="javascript:;">电视 盒子</a>
+                    <!-- <div class="children"></div> -->
+                </li>
+                <li class="menu-item">
+                    <a href="javascript:;">笔记本 平板</a>
+                    <!-- <div class="children"></div> -->
+                </li>
+                <li class="menu-item">
+                    <a href="javascript:;">家电 排插</a>
+                    <!-- <div class="children"></div> -->
+                </li>
+                <li class="menu-item">
+                    <a href="javascript:;">出行 穿戴</a>
+                    <!-- <div class="children"></div> -->
+                </li>
+                <li class="menu-item">
+                    <a href="javascript:;">智能 路由器</a>
+                    <!-- <div class="children"></div> -->
+                </li>
+                <li class="menu-item">
+                    <a href="javascript:;">电源 配件</a>
+                    <!-- <div class="children"></div> -->
+                </li>
+                <li class="menu-item">
+                    <a href="javascript:;">生活 箱包</a>
+                    <!-- <div class="children"></div> -->
+                </li>
+            </ul>
         </div>
-        <!-- 主页商品列表开始 -->
-        <div class="product-box">
-            <div class="container">
-            <!-- 商品主标题 -->
-            <h2>手机</h2>
-            <div class="wrapper">
-                <!-- 左边大广告 -->
-                <div class="banner-left">
-                    <a href="/#/product/35">
-                        <img src="/imgs/mix-alpha.jpg" alt="">
-                    </a>
-                </div>
-                <!-- 右边的列表 -->
-                <div class="list-box">
-                    <div class="list" v-for="(arr,i) in phoneList" :key="i">
-                        <div class="item" v-for="(item,j) in arr" :key="j">
-                            <!-- 先展示把索引奇数当做新平 -->
-                            <span :class="{'new-pro':j%2==0}">新品</span>
-                            <div class="item-img">
-                                <img :src="item.mainImage" alt="">
-                            </div>
-                            <div class="item-info">
-                                <h3>{{item.name}}</h3>
-                                <p>{{item.subtitle}}</p>
-                                <p class="price">{{item.price}}元</p>
-                            </div>
+
+        <!-- 开始轮播 swiper组件 -->
+        <swiper :options="swiperOption">
+          <swiper-slide
+          v-for="(item,index) in slideList" 
+          :key="index">
+              <a :href="'/#/product/'+item.id">
+                  <img :src="item.img">
+              </a>
+          </swiper-slide>
+          <!-- 如果需要分页器(轮播指示器) 插槽方式 -->
+          <div class="swiper-pagination" slot="pagination"></div>
+          <!-- 如果需要导航按钮 插槽方式-->
+          <div class="swiper-button-prev" slot="button-prev"></div>
+          <div class="swiper-button-next" slot="button-next"></div> 
+          </swiper>
+      </div>
+
+      <!-- 广告位的开始 -->
+      <div class="ads-box">
+        <a :href="'/#/product/'+item.id" v-for="(item,index) in adsList" :key="index">
+          <img :src="item.img" alt="">
+        </a>
+      </div>
+      <!-- 中间大图 -->
+      <div class="banner">
+        <a href="/#/product/30">
+          <img src="/imgs/banner-1.png" alt="">                
+        </a>
+      </div>
+    </div>
+    <!-- 主页商品列表开始 -->
+    <div class="product-box">
+        <div class="container">
+        <!-- 商品主标题 -->
+        <h2>手机</h2>
+        <div class="wrapper">
+            <!-- 左边大广告 -->
+            <div class="banner-left">
+                <a href="/#/product/35">
+                    <img src="/imgs/mix-alpha.jpg" alt="">
+                </a>
+            </div>
+            <!-- 右边的列表 -->
+            <div class="list-box">
+                <div class="list" v-for="(arr,i) in phoneList" :key="i">
+                    <div class="item" v-for="(item,j) in arr" :key="item.id">
+                        <!-- 先展示把索引奇数当做新平 -->
+                        <span :class="{'new-pro':j%2==0}">新品</span>
+                        <div class="item-img">
+                            <img :src="item.mainImage" alt="">
+                        </div>
+                        <div class="item-info">
+                            <h3>{{item.name}}</h3>
+                            <p>{{item.subtitle}}</p>
+                            <p class="price" @click="addCart(item.id)">{{item.price}}元</p>
                         </div>
                     </div>
                 </div>
             </div>
-            </div>
         </div>
-        <service-bar></service-bar>
+        </div>
     </div>
+    <service-bar></service-bar>
+  </div>
 </template>
 <script>
 import ServiceBar from '../components/ServiceBar.vue';
@@ -209,21 +209,31 @@ export default {
         }
     },
     mounted(){
-        this.init();
+      this.init();
     },
     methods:{
-        init(){
-            this.axios.get("/products",{
-                parms:{
-                    categoryId:'100012',
-                    // 只要8条
-                    pageSize:14,
-                }
-            }).then((res)=>{
-                // 分割成一个二维数组,但原数组没变,slice
-                this.phoneList= [res.list.slice(4,8),res.list.slice(4,8)];
-            })
-        }
+      init(){
+        this.axios.get("/products",{
+          parms:{
+              categoryId:'100012',
+              // 只要8条
+              pageSize:14,
+          }
+        }).then((res)=>{
+          // 分割成一个二维数组,但原数组没变,slice
+          this.phoneList= [res.list.slice(4,8),res.list.slice(4,8)];
+        })
+      },
+      addCart(id) {
+        this.axios.post('/carts',{
+          productId:id,
+          selected: true
+        }).then((res)=> {
+          console.log('购物添加成功')
+          console.log(res)
+          this.$store.dispatch('saveCartCount',res.cartTotalQuantity);
+        })
+      }
     }
 }
 </script>

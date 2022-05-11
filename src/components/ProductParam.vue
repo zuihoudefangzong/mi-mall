@@ -61,7 +61,7 @@ export default {
     top: 0;
     width: 100%;
     box-shadow: 0 5px 5px #ccc;
-    z-index: 1;
+    z-index: 2;
   }
   .container{
     @include flex();

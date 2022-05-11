@@ -16,10 +16,10 @@
                     <a href="javascript:;" v-if="username">{{username}}</a>
                     <a href="javascript:;" v-if="!username" @click="login">登录</a>
                     <a href="javascript:;" v-if="username">我的订单</a>
-                    <a href="javascript:;">注册</a>
+                    <a href="javascript:;" v-if="!username">注册</a>
                     <!-- 购物车有个icon图标 -->
                     <a href="javascript:;" class="my-cart" @click="goToCart">
-                        <span class="icon-cart"></span>购物车
+                        <span class="icon-cart"></span>购物车{{$store.state.cartCount}}
                     </a>
                 </div>
             </div>
@@ -76,10 +76,14 @@ export default {
     name:'nav-header',
     data(){
         return {
-            username: this.$store.state.username,
             // 存放手机list
             phoneList:[],
         }
+    },
+    computed: {
+      username() {
+        return  this.$store.state.username
+      }
     },
     // 手写了过滤器  价格
     filters:{
@@ -90,6 +94,7 @@ export default {
     },
     mounted(){
         this.getProductList();
+        console.log(this.$store.state.username)
     },
     methods:{
         // 点击登录跳转

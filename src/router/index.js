@@ -27,14 +27,14 @@ const routes = [
     redirect:'/index',
     children:[
       {
-        path:'/detail/:id',
-        name:'detail',
-        component:Detail,
-      },
-      {
         path:'/index',
         name:'index',
         component:Index,
+      },
+      {
+        path:'/detail/:id',
+        name:'detail',
+        component:Detail,
       },
       {
         path:'/product/:id',

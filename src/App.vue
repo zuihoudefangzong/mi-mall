@@ -13,12 +13,16 @@ export default {
     }
   },
   mounted(){
-    // this.getUser()
-    // this.getCartCount()
+    this.getUser()
+    this.getCartCount()
   },
   methods: {
     getUser(){
-      this.axios.get('/user').then((res={})=>{
+      this.axios.get('/user').then((res)=>{
+        console.log(res)
+        if(!res) {
+          res = {}
+        }
         this.$store.dispatch('saveUserName',res.username);
       })
     },
