@@ -121,6 +121,7 @@ export default{
         productId: this.id,
         selected: true
       }).then(({res={cartProductVoList:0}}) => {
+        // 返回的data有carProuctVoList,carTotalPrice,cartTotalQuantity
         this.$store.dispatch('saveCartCount',res.cartTotalQuantity);
         // this.$router.push('/cart');
       })

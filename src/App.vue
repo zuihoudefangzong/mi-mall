@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-      <router-view></router-view>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -13,8 +13,8 @@ export default {
     }
   },
   mounted(){
-    this.getUser()
-    this.getCartCount()
+    // this.getUser()
+    // this.getCartCount()
   },
   methods: {
     getUser(){

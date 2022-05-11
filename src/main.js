@@ -3,6 +3,7 @@ import router from './router'
 import store from './store'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import VueCookie from 'vue-cookie'
 import App from './App.vue'
 // 当是自定义的js文件 前面一定要加相对路径
 // 否则会去node_module里面找npm包
@@ -27,10 +28,8 @@ axios.interceptors.response.use(function(response){
     return res.data;
   }else if(res.status == 10){
     // 后端定义的失败是10
-    if(response.path !='/#/index'){
-      // 跳转到登录login页面
-      window.location.href='/#/login';
-    }
+    // 跳转到登录login页面
+    window.location.href='/#/login';
     return Promise.reject(res)
   }else{
     // 真的报错了
@@ -39,6 +38,7 @@ axios.interceptors.response.use(function(response){
 })
 
 Vue.use(VueAxios,axios)
+Vue.use(VueCookie);
 Vue.config.productionTip = false
 
 new Vue({

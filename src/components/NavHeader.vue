@@ -76,7 +76,7 @@ export default {
     name:'nav-header',
     data(){
         return {
-            username:'实例用户',
+            username: this.$store.state.username,
             // 存放手机list
             phoneList:[],
         }
