@@ -1,5 +1,5 @@
 <template>
-    <div class="footer">
+    <footer class="footer">
         <div class="footer-logo">
             <img src="/imgs/logo-footer.png" alt="">
             <p>小米商城</p>
@@ -14,11 +14,11 @@
             <span class="domain">mi.futurefe.com</span>
             All Rights Reserved.
         </div>
-    </div>
+    </footer>
 </template>
 <script>
 export default {
-    name:'nav-footer',
+    name:'NavFooter',
 }
 </script>
 

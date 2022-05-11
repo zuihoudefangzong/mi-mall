@@ -28,7 +28,7 @@
         <!-- 头部导航开始 -->
         <div class="nav-header">
             <div class="container">
-                <div class="header-log">
+                <div class="header-logo">
                     <!-- 默认跳转到首页 -->
                     <a href="/#/index"></a>
                     <!-- 动画用过渡就好 -->
@@ -166,38 +166,6 @@ export default {
             @include flex();
             // 折叠栏定位的祖先级别元素
             position: relative;
-            // 头部的logo
-            .header-log {
-                display: inline-block;
-                width: 55px;
-                height: 55px;
-                background-color: #FF6600;
-                a {
-                    display: inline-block;
-                    // 实际是放了两张照片 所以是55*2
-                    width: 110px;
-                    height: 55px;
-                    // 伪类before
-                    &:before{
-                        content: '';
-                        @include bgImg(55px,55px,'/imgs/mi-logo.png',55px);
-                        // 鼠标移走 margin恢复了原来
-                        // 所以过渡添加在这里
-                        transition: margin .2s;
-                    }
-                    // 伪类after
-                    &:after{
-                        content: '';
-                        @include bgImg(55px,55px,'/imgs/mi-home.png',55px);
-                    }
-                    // 鼠标移上去的时候
-                    &:hover{
-                        margin-left: -55px;
-                        // 移进去margin属性过渡0.2秒
-                        transition: margin .2s;
-                    }
-                }
-            }
             // 头部菜单
             .header-menu {
                 display: inline-block;
