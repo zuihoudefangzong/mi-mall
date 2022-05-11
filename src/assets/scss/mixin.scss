@@ -22,12 +22,3 @@
   width:$w;
   height:$h;
 }
-
-// 清除浮动float
-@mixin clearfix() {
-  &::after {
-    display: block;
-    content: "";
-    clear: both;
-  }
-}
