@@ -19,15 +19,18 @@
   </header>
 </template>
 <script>
+// vuex
+import { mapState } from 'vuex'
 export default {
   name:'OrderHeader',
   props: {
     title: String,
   },
   computed: {
-    username() {
-      return  this.$store.state.username
-    }
+    // username() {
+    //   return  this.$store.state.username
+    // }
+    ...mapState(['username'])
   },
 }
 </script>

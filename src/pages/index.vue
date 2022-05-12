@@ -227,10 +227,10 @@ export default {
       addCart(id) {
         this.axios.post('/carts',{
           productId:id,
+          // 默认选中 我的购物车页当前商品就会选中
           selected: true
         }).then((res)=> {
           console.log('购物添加成功')
-          console.log(res)
           this.$store.dispatch('saveCartCount',res.cartTotalQuantity);
         })
       }
