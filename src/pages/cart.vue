@@ -8,24 +8,40 @@
     <div class="wrapper">
       <div class="container">
         <div class="cart-box">
+          <!-- cart头部head字段 -->
           <ul class="cart-item-head">
-            <li class="col-1"><span class="checkbox" v-bind:class="{'checked':allChecked}"></span>全选</li>
+            <li class="col-1">
+              <!-- 点击全选和单选 -->
+              <span
+                class="checkbox"
+                :class="{'checked':allChecked}"
+                @click="toggleAll"
+              >
+              </span>全选
+            </li>
             <li class="col-3">商品名称</li>
             <li class="col-1">单价</li>
             <li class="col-2">数量</li>
             <li class="col-1">小计</li>
             <li class="col-1">操作</li>
           </ul>
+          <!-- 购物车商品列表 -->
           <ul class="cart-item-list">
             <li class="cart-item" v-for="item in list" :key="item.productId">
               <div class="item-check">
-                <span class="checkbox" v-bind:class="{'checked':item.productSelected}"></span>
+                <span
+                  class="checkbox"
+                  :class="{'checked':item.productSelected}"
+                  @click="updateCart(item)"
+                >
+                </span>
               </div>
               <div class="item-name">
                 <img v-lazy="item.productMainImage" alt="">
                 <span>{{item.productName + ' , ' + item.productSubtitle}}</span>
               </div>
               <div class="item-price">{{item.productPrice}}</div>
+              <!-- 商品数量 -->
               <div class="item-num">
                 <div class="num-box">
                   <a href="javascript:;">-</a>
@@ -33,18 +49,20 @@
                   <a href="javascript:;">+</a>
                 </div>
               </div>
+              <!-- 每个商品的总价 数量乘以单价 -->
               <div class="item-total">{{item.productTotalPrice}}</div>
               <div class="item-del"></div>
             </li>
           </ul>
         </div>
+        <!--  -->
         <div class="order-wrap clearfix">
           <div class="cart-tip fl">
             <a href="/#/index">继续购物</a>
-            共<span>{{list.length}}</span>件商品，已选择<span></span>件
+            共<span>{{list.length}}</span>件商品，已选择<span>{{checkedNum}}</span>件
           </div>
           <div class="total fr">
-            合计：<span></span>元
+            合计：<span>{{cartTotalPrice}}</span>元
             <a href="javascript:;" class="btn">去结算</a>
           </div>
         </div>
@@ -66,23 +84,73 @@ export default {
     return {
       list:[],//商品列表
       allChecked:false,//是否全选
+      cartTotalPrice:0,//商品总金额
+      checkedNum:0//用户选中商品数量
     }
   },
   mounted() {
     this.getCartList()
   },
   methods: {
+    // 抽离出来的公共赋值
+    renderData(res){
+      this.list = res.cartProductVoList || []
+      this.allChecked = res.selectedAll
+      this.cartTotalPrice =res.cartTotalPrice
+      // 只有一行代码 省略return
+      this.checkedNum = this.list.filter(item => item.productSelected).length
+    },
     getCartList() {
       this.axios.get('/carts')
         .then( res => {
           if (res) {
-            this.list = res.cartProductVoList || []
-            this.allChecked = res.selectedAll
-            this.cartTotalPrice =res.cartTotalPrice
+            this.renderData(res)
           }
         })
+    },
+    // 控制全选功能
+    toggleAll() {
+      // 更新当前用户购物车是否全选
+      this.axios.put(this.selectAllUrl)
+        .then( res => {
+          res && this.renderData(res)
+        })
+    },
+    // 更新购物车数量和购物车单选状态
+    updateCart(item,type) {
+      // 当前商品数量 和当前商品的是否选中了
+      let { quantity, productSelected } = item
+      if(type === '-') {
+        if(quantity === 1) {
+          alert('商品至少保留一件')
+          return
+        }
+        -- quantity;
+      }
+      else if (type === '+') {
+        if(quantity > item.productStock){
+          this.$message.warning('购买数量不能超过库存数量');
+          return;
+        }
+        ++quantity;
+      }
+      else {
+        selected = !item.productSelected;
+      }
+      this.axios.put(`/carts/${item.productId}`,{
+        quantity,
+        selected
+      }).then((res)=>{
+        this.renderData(res);
+      })
     }
   },
+  computed: {
+    // 全选url和取消全选 url地址
+    selectAllUrl() {
+      return this.allChecked ? '/carts/unSelectAll' : '/carts/selectAll'
+    }
+  }
 }
 </script>
 

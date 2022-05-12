@@ -48,8 +48,9 @@ export default {
       line-height: 55px;
     }
     .title {
-      font-size: 28px;
+      font-size: 26px;
       float: left;
+      margin-left:54px;
       span {
         font-size: 14px;
         margin-left: 17px;
