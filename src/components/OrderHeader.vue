@@ -40,6 +40,7 @@ export default {
 @import '../assets/scss/mixin.scss';
 .order-header {
   padding: 30px 0;
+  border-bottom: 2px solid #FF6600;
   .container {
     .header-logo { float: left; }
     .title, .username{
@@ -48,14 +49,18 @@ export default {
       line-height: 55px;
     }
     .title {
-      font-size: 26px;
+      
       float: left;
       margin-left:54px;
+      h2 {
+        font-size: 28px;
+        color: #333;
+      }
       span {
         font-size: 14px;
         margin-left: 17px;
         color: #999999;
-        font-weight: bold;
+        font-weight: 200;
       }
     }
     .username {

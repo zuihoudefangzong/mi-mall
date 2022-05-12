@@ -44,14 +44,14 @@
               <!-- 商品数量 -->
               <div class="item-num">
                 <div class="num-box">
-                  <a href="javascript:;">-</a>
+                  <a href="javascript:;" @click="updateCart(item,'-')">-</a>
                   <span>{{item.quantity}}</span>
-                  <a href="javascript:;">+</a>
+                  <a href="javascript:;" @click="updateCart(item,'+')">+</a>
                 </div>
               </div>
               <!-- 每个商品的总价 数量乘以单价 -->
               <div class="item-total">{{item.productTotalPrice}}</div>
-              <div class="item-del"></div>
+              <div class="item-del" @click="delProduct(item)"></div>
             </li>
           </ul>
         </div>
@@ -63,7 +63,11 @@
           </div>
           <div class="total fr">
             合计：<span>{{cartTotalPrice}}</span>元
-            <a href="javascript:;" class="btn">去结算</a>
+            <a
+              href="javascript:;"
+              class="btn"
+              @click="order"
+            >去结算</a>
           </div>
         </div>
       </div>
@@ -134,15 +138,38 @@ export default {
         }
         ++quantity;
       }
-      else {
-        selected = !item.productSelected;
+      else {  
+        productSelected = !item.productSelected;
       }
       this.axios.put(`/carts/${item.productId}`,{
         quantity,
-        selected
+        selected: productSelected
       }).then((res)=>{
         this.renderData(res);
       })
+    },
+    // 删除购物车商品
+    delProduct(product) {
+      this.axios.delete(`/carts/${product.productId}`)
+        .then(res=> {
+          this.renderData(res)
+        })
+    },
+    // 购物车下单
+    order() {
+      // map或者filter都行 es6的数组zevery函数
+      // 最终返回Boolean
+      let isCheck = this.list.every( item=> {
+        // 检索每个item.productSelected是否为false
+        return item.productSelected === false
+      })
+      if(isCheck){
+        alert('请选择一件商品')
+      }
+      else {
+        // 订单确认页面 添加收货地址
+        this.$router.push('/order/confirm')
+      }
     }
   },
   computed: {
