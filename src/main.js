@@ -3,6 +3,7 @@ import router from './router'
 import store from './store'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import VueLazyload from 'vue-lazyload'
 import VueCookie from 'vue-cookie'
 import App from './App.vue'
 // 当是自定义的js文件 前面一定要加相对路径
@@ -38,6 +39,10 @@ axios.interceptors.response.use(function(response){
 })
 
 Vue.use(VueAxios,axios)
+Vue.use(VueLazyload,{
+  // 图片的懒加载
+  loading:"/imgs/loading-svg/loading-bars.svg",
+});
 Vue.use(VueCookie);
 Vue.config.productionTip = false
 

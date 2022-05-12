@@ -19,7 +19,6 @@ export default {
   methods: {
     getUser(){
       this.axios.get('/user').then((res)=>{
-        console.log(res)
         if(!res) {
           res = {}
         }
