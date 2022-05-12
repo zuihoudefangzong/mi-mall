@@ -5,10 +5,11 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import VueLazyload from 'vue-lazyload'
 import VueCookie from 'vue-cookie'
+import { Message } from 'element-ui'
 import App from './App.vue'
 // 当是自定义的js文件 前面一定要加相对路径
 // 否则会去node_module里面找npm包
-import env from './env'
+// import env from './env'
 
 
 // 根据前端前端的跨域方式做调整 设置请求的根路径
@@ -21,23 +22,31 @@ axios.defaults.baseURL='/api';
 axios.defaults.timeout=8000;
 // 接口错误拦截
 // axios相应response拦截器
-axios.interceptors.response.use(function(response){
-  // 接口的返回值
-  let res =response.data;
-  if(res.status==0){
-    // 后端定义的成功是0
-    return res.data;
-  }else if(res.status == 10){
-    // 后端定义的失败是10
-    // 跳转到登录login页面
-    window.location.href='/#/login';
-    return Promise.reject(res)
-  }else{
-    // 真的报错了
-    alert(res.mes);
+axios.interceptors.response.use(
+  function(response){
+    // 接口的返回值
+    let res =response.data;
+    if(res.status==0){
+      // 后端定义的成功是0
+      return res.data;
+    }else if(res.status == 10){
+      // 后端定义的失败是10
+      // 跳转到登录login页面
+      window.location.href='/#/login';
+      return Promise.reject(res)
+    }else{
+      // 真的报错了
+      Message.warning(res.msg);
+    }
+  },
+  // 对请求错误做些什么
+  error => {
+    let res = error.response;
+    Message.error(res.data.message);
+    return Promise.reject(error);
   }
-})
-
+)
+Vue.prototype.$message = Message;
 Vue.use(VueAxios,axios)
 Vue.use(VueLazyload,{
   // 图片的懒加载

@@ -164,7 +164,7 @@ export default {
         return item.productSelected === false
       })
       if(isCheck){
-        alert('请选择一件商品')
+        this.$message.warning('请选择一件商品')
       }
       else {
         // 订单确认页面 添加收货地址
