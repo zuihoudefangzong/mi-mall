@@ -15,6 +15,7 @@
                 <div class="topbar-user">
                     <a href="javascript:;" v-if="username">{{username}}</a>
                     <a href="javascript:;" v-if="!username" @click="login">登录</a>
+                    <a href="javascript:;" v-if="username" @click="logout">退出</a>
                     <a href="javascript:;" v-if="username">我的订单</a>
                     <a href="javascript:;" v-if="!username">注册</a>
                     <!-- 购物车有个icon图标 -->
@@ -72,56 +73,80 @@
     </div>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
-    name:'nav-header',
-    data(){
-        return {
-            // 存放手机list
-            phoneList:[],
-        }
-    },
-    computed: {
-      username() {
-        return  this.$store.state.username
+  name:'NavHeader',
+  data(){
+      return {
+        // 存放手机list
+        phoneList:[],
       }
-    },
-    // 手写了过滤器  价格
-    filters:{
-        currency(val){
-            if(!val) return '0.00';
-            return `￥${val.toFixed(2)}元`;
-        }
-    },
-    mounted(){
-        this.getProductList();
-        console.log(this.$store.state.username)
-    },
-    methods:{
-        // 点击登录跳转
-        login(){
-            this.$router.push('/login')
-        },
-        getProductList(){
-            this.axios.get('/products',{
-                // 传参
-                params:{
-                    // 该id是后台给的 查询头部组件手机列表
-                    categoryId:'100012'
-                }
-            }).then((res)=>{
-                console.log(res.list);
-                if(res.list.length>6){
-                    this.phoneList=res.list.slice(0,6);
-                }else{
-                    this.phoneList=res.list
-                }
-            })
-        },
-        // 点击购物车跳转
-        goToCart(){
-            this.$router.push('/cart')
-        }
+  },
+  computed: {
+    // username() {
+    //   return  this.$store.state.username
+    // }
+    ...mapState(['username'])
+  },
+  // 手写了过滤器  价格
+  filters:{
+    currency(val){
+      if(!val) return '0.00';
+      return `￥${val.toFixed(2)}元`;
     }
+  },
+  mounted(){
+    this.getProductList();
+  },
+  updated() {
+    // this.$route当前路由实例
+    if(this.$route.params && this.$route.params.from === 'login') {
+      // 更新一下购物车数量
+      this.getCartCount()
+    }
+  },
+  methods:{
+    // 点击登录跳转
+    login(){
+      this.$router.push('/login')
+    },
+    getProductList(){
+      this.axios.get('/products',{
+        // 传参
+        params:{
+          // 该id是后台给的 查询头部组件手机列表
+          categoryId:'100012'
+        }
+      }).then((res)=>{
+        if(res.list.length>6){
+          this.phoneList=res.list.slice(0,6);
+        }else{
+          this.phoneList=res.list
+        }
+      })
+    },
+    // 点击购物车跳转
+    goToCart(){
+      this.$router.push('/cart')
+    },
+    logout() {
+      this.axios.post('/user/logout').then(()=>{
+        this.$message.success('退出成功')
+        // 删除cookie
+        // this.$cookie.remove('userId');
+        // 立刻过期也行
+        this.$cookie.set('userId','',{expires:'-1'});
+        // 更新vuex里面的数据
+        this.$store.dispatch('saveUserName','');
+        this.$store.dispatch('saveCartCount','0');
+      })
+    },
+    getCartCount(){
+      this.axios.get('/carts/products/sum').then((res=0)=>{
+        this.$store.dispatch('saveCartCount',res);
+      })
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>

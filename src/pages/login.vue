@@ -69,7 +69,6 @@ export default {
       login(){
         // 在当前this解构出来
         let {username, password} = this;
-        console.log('进来',username,password)
         this.axios.post('/user/login',{
             // key和value一样 就可以简写
             username,
@@ -77,12 +76,19 @@ export default {
         }).then((res)=>{
           if (res) {
             // 先在main.js到导入vue-cookies expires过期时间
+            // {expires:'Session'}是和后端同步的Session
             this.$cookie.set('userId',res.id,{expires:'Session'});
             // 先派发给actions里面的saveUsername
             // this.$store.dispatch('saveUserName',res.username);
             this.saveUserName(res.username);
             // 将 `this.saveUsername(res.username)` 映射为 `this.$store.dispatch('saveUsername',res.username)`
-            this.$router.push('/index');
+            // this.$router.push('/index');
+            // 单页面vue-router传参query也行 path:/index query:{form:'login'}
+            this.$router.push({
+              // 路由name
+              name: 'index',
+              params: { from: 'login'}
+            })
           }
           
         }).catch(res=> {
