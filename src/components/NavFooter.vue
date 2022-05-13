@@ -5,13 +5,13 @@
             <p>小米商城</p>
         </div>
         <div class="footer-link">
-            <a href="https://www.baidu.com" target="_blank">河畔一角主页</a><span>|</span>
+            <a href="https://www.baidu.com" target="_blank">本人主页</a><span>|</span>
             <a href="https://www.baidu.com" target="_blank">Vue全栈课程</a><span>|</span>
             <a href="https://www.baidu.com" target="_blank">React全家桶课程</a><span>|</span>
             <a href="https://www.baidu.com" target="_blank">微信支付专项课程（H5+小程序+node+Mongo）</a>
         </div>
         <div class="copyright">Copyright ©2020
-            <span class="domain">mi.futurefe.com</span>
+            <span class="domain">www.leaveheart.com</span>
             All Rights Reserved.
         </div>
     </footer>
