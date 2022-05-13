@@ -97,7 +97,7 @@ export default {
               password:'admin1',
               email:'admin@163.com',
           }).then((res)=>{
-              alert('注册成功')
+              this.$message.success('注册成功')
               // 先在main.js到导入vue-cookies expires过期时间
               if(res) {
                 this.$cookie.set('userId',res.id,{expires:'Session'});

@@ -46,6 +46,8 @@ axios.interceptors.response.use(
     return Promise.reject(error);
   }
 )
+// 全局使用对象也行 同等下面
+// Vue.use(Message)
 Vue.prototype.$message = Message;
 Vue.use(VueAxios,axios)
 Vue.use(VueLazyload,{

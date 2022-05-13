@@ -126,7 +126,7 @@ export default {
       let { quantity, productSelected } = item
       if(type === '-') {
         if(quantity === 1) {
-          alert('商品至少保留一件')
+          this.$message.info('商品至少保留一件')
           return
         }
         -- quantity;
@@ -154,6 +154,7 @@ export default {
         .then(res=> {
           this.renderData(res)
         })
+      this.$message.success(`${product.productName}删除成功`)
     },
     // 购物车下单
     order() {
