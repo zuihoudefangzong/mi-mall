@@ -144,15 +144,15 @@
               <select name="city" v-model="checkedItem.receiverCity">
                 <option value="北京">北京</option>
                 <option value="天津">天津</option>
-                <option value="河北">石家庄</option>
+                <option value="石家庄">石家庄</option>
               </select>
               <select name="district" v-model="checkedItem.receiverDistrict">
-                <option value="北京">昌平区</option>
-                <option value="天津">海淀区</option>
-                <option value="河北">东城区</option>
-                <option value="天津">西城区</option>
-                <option value="河北">顺义区</option>
-                <option value="天津">房山区</option>
+                <option value="昌平区">昌平区</option>
+                <option value="海淀区">海淀区</option>
+                <option value="东城区">东城区</option>
+                <option value="西城区">西城区</option>
+                <option value="顺义区">顺义区</option>
+                <option value="房山区">房山区</option>
               </select>
             </div>
             <div class="item">
@@ -251,14 +251,15 @@ export default{
     submitAddress() {
       let { checkedItem, userAction } = this
       let method,url,params={};
-      if(userAction ==='add'|| userAction === 'edit') {
+      if( userAction ==='add'|| userAction === 'edit' ) {
         let { receiverName, 
           receiverMobile,
           receiverProvince, 
           receiverCity, 
           receiverDistrict, 
           receiverAddress, 
-          receiverZip} = checkedItem;
+          receiverZip
+        } = checkedItem;
         let errMsg='';
         if(!receiverName){
           errMsg = '请输入收货人名称';
