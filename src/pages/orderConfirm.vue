@@ -32,7 +32,7 @@
                 <div class="phone">176****1717</div>
                 <div class="street">北京 北京市 昌平区 回龙观<br>东大街地铁</div>
                 <div class="action">
-                  <a href="javascript:;" class="fl">
+                  <a href="javascript:;" class="fl" @click="delAddress">
                     <svg class="icon icon-del"><use xlink:href="#icon-del"></use></svg>
                   </a>
                   <a href="javascript:;" class="fr">
@@ -116,11 +116,30 @@
           </div>
         </div>
       </div>
+
+      <!-- 删除弹框messageBox -->
+      <modal
+        title="是否删除"
+        btnType="1"
+        :showModal="showDelModal"
+        @cancel="showDelModal = false"
+        @submit="submitAddress"
+      >
+        <!-- 具名插槽 -->
+        <template v-slot:body>
+          <p>您确认要删除此地址吗？</p>
+        </template>
+      </modal>
     </div>
   </div>
 </template>
 <script>
-// import Modal from './../components/Modal'
+import Modal from './../components/Modal.vue'
+const USER_ACTION = {
+  // 用户address增删改查行为
+  'add': { methood:'post',url:'/shippings'},
+  'del': { methood:'post'}
+} 
 export default{
   name:'order-confirm',
   data(){
@@ -129,14 +148,18 @@ export default{
       cartList:[],//购物车中需要结算的商品列表
       cartTotalPrice: 0,//商品总金额
       count:0,//商品结算数量
+      checkedItem: null,//选中的商品对象
+      userAction:null,//用户增删改address行为
+      showDelModal: false, //是否显示删除弹框
     }
   },
-  // components:{ Modal },
+  components:{ Modal },
   mounted() {
     this.getAddressList();
     this.getCartList();
   },
   methods: {
+    // user address get查
     getAddressList() {
       this.axios.get('/shippings').then( res => {
         if(res) {
@@ -147,7 +170,6 @@ export default{
     // 购物车list过滤filter
     getCartList() {
       this.axios.get('/carts').then(res=>{
-        console.log(res)
         let list = res.cartProductVoList
         this.cartTotalPrice = res.cartTotalPrice
         if(list) {
@@ -158,6 +180,44 @@ export default{
           this.cartList.map( item => this.count += item.quantity)
         }
       })
+    },
+    // delete address
+    delAddress(item) {
+      console.log('delAddress')
+      // this.checkedItem = item
+      this.showDelModal = true
+      // this.userAction = 'del'
+    },
+    // address增删改
+    submitAddress() {
+      console.log('submitAddress')
+      // let { checkedItem, userAction } = this
+      // let method,url;
+      // switch (userAction){
+      //   case 'add':
+      //     method = 'post',url = '/shippings';
+      //     break
+      //   case 'del':
+      //     break
+      //   case 'put':
+      //     method = 'put',url = `/shippings/${checkedItem.id}`;
+      //     break
+      //   case 'add':
+      //     method = 'delete',url = `/shippings/${checkedItem.id}`;
+      //     break
+      //   default:
+      //     break
+      // }
+      // this.axios[method](url).then(() =>{
+      //   // 查address表
+      //   this.getAddressList();
+      //   this.$message.success('操作成功')
+      // })
+    },
+    closeModal() {
+      this.checkedItem = null
+      this.userAction = null
+      this.showDelModal = false
     }
   }
 }
