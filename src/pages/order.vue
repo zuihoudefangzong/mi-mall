@@ -29,9 +29,17 @@ export default {
     }
   },
   mounted() {
-    let {path} = this.$route
-    this.title = TITLE_TIP[path].title
-    this.tip = TITLE_TIP[path].tip
+    this.update_title_tip()
+  },
+  updated() {
+    this.update_title_tip()
+  },
+  methods: {
+    update_title_tip() {
+      let {path} = this.$route
+      this.title = TITLE_TIP[path].title
+      this.tip = TITLE_TIP[path].tip
+    }
   }
 }
 </script>
