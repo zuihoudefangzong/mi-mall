@@ -29,8 +29,10 @@
             <div class="addr-list clearfix">
               <div
                 class="addr-info"
-                v-for="item in list"
+                v-for="(item, index) in list"
                 :key="item.id"
+                :class="{'checked': checkIndex === index }"
+                @click="checkIndex = index"
               >
                 <h2>{{item.receiverName}}</h2>
                 <div class="phone">{{item.receiverMobile}}</div>
@@ -116,7 +118,7 @@
           <!-- button组 -->
           <div class="btn-group">
             <a href="/#/cart" class="btn btn-default btn-large">返回购物车</a>
-            <a href="javascript:;" class="btn btn-large">去结算</a>
+            <a href="javascript:;" class="btn btn-large" @click="orderSubmit">去结算</a>
           </div>
         </div>
       </div>
@@ -199,6 +201,7 @@ export default{
       userAction:null,//用户增删改address行为
       showDelModal: false, //是否显示删除弹框
       showEditModal:false,//是否显示新增或者编辑弹框
+      checkIndex:0//当前收货地址选中索引
     }
   },
   components:{ Modal },
@@ -313,6 +316,27 @@ export default{
       this.userAction = null
       this.showDelModal = false
       this.showEditModal = false;
+    },
+    // 订单提交结算了
+    orderSubmit() {
+      // 先判断收货address选了么
+      // 万一用户点击后又删除 就没有选中任何地址
+      let item = this.list[this.checkIndex]
+      if(!item) {
+        this.$message.error('请选择一个收货地址')
+        return
+      }
+      this.axios.post('/orders',{shippingId:item.id})
+        .then( res => {
+          if(res) {
+            this.$router.push({
+              path: '/order/pay',
+              query: {
+                orderNo: res.orderNo
+              }
+            })
+          }
+        })
     }
   }
 }
