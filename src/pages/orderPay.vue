@@ -49,16 +49,30 @@
               :class="{'checked':payType==1}"
               @click="paySubmit(1)">
             </div>
-            <div class="pay pay-wechat" :class="{'checked':payType==2}"></div>
+            <div
+              class="pay pay-wechat"
+              :class="{'checked':payType==2}"
+              @click="paySubmit(2)">
+            </div>
           </div>
         </div>
       </div>
     </div>
+    <!-- 微信支付弹窗 -->
+     <scan-pay-code
+      v-if="showPay"
+      @close="closePayModal"
+      :img="payImg">
+    </scan-pay-code>
   </div>
 </template>
 <script>
+import QRCode from 'qrcode'
+// 自己手写微信支付的弹框
+import ScanPayCode from './../components/ScanPayCode'
 export default {
   name: 'OrderPay',
+  components: { ScanPayCode },
   data() {
     return {
       orderId:null,// 订单号orderNo
@@ -67,6 +81,8 @@ export default {
       showDetail:false,//是否显示订单详情
       payType:'',//支付类型
       payment:0,//订单总金额
+      showPay:false,//是否显示微信支付弹框
+      payImg:'',//微信支付的二维码地址
     }
   },
   mounted() {
@@ -94,6 +110,27 @@ export default {
       if(payType === 1){
         window.open('/#/order/alipay?orderId='+this.orderId,'_blank');
       }
+      else if(payType === 2) {
+        this.axios.post('/pay',{
+          orderId:this.orderId,
+          orderName:'商城项目实战',
+          amount:0.01,//单位元
+          payType:2 //1支付宝，2微信
+        }).then(res=>{
+          // 微信链接格式的转换成base64的url图片
+          QRCode.toDataURL(res.content)
+            .then(url => {
+              this.showPay = true;
+              this.payImg = url;
+            })
+            .catch(() => {
+              this.$message.error('微信二维码生成失败，请稍后重试');
+            })
+        })
+      }
+    },
+    closePayModal() {
+      this.showPay = false
     }
   },
 }
