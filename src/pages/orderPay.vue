@@ -44,7 +44,11 @@
           <h3>选择以下支付方式付款</h3>
           <div class="pay-way">
             <p>支付平台</p>
-            <div class="pay pay-ali" :class="{'checked':payType==1}"></div>
+            <div
+              class="pay pay-ali"
+              :class="{'checked':payType==1}"
+              @click="paySubmit(1)">
+            </div>
             <div class="pay pay-wechat" :class="{'checked':payType==2}"></div>
           </div>
         </div>
@@ -70,13 +74,13 @@ export default {
     this.getOrderDetail()
   },
   methods: {
-    getOrderId(){
+    getOrderId (){
       const { query } = this.$route
       if(query && query.orderNo) {
         this.orderId = query.orderNo
       }
     },
-    getOrderDetail() {
+    getOrderDetail () {
       if(!this.orderId) return
       this.axios.get(`/orders/${this.orderId}`).then(res => {
         let { shippingVo, orderItemVoList,payment}  = res
@@ -84,6 +88,12 @@ export default {
         this.orderDetail = orderItemVoList
         this.payment = payment
       })
+    },
+    paySubmit (payType) {
+      // 支付宝的直接打开新窗口
+      if(payType === 1){
+        window.open('/#/order/alipay?orderId='+this.orderId,'_blank');
+      }
     }
   },
 }
