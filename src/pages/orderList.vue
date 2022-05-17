@@ -58,8 +58,15 @@
             class="pagination"
           >
           </el-pagination> -->
-          <div class="load-more" v-if="true">
+          <div class="load-more" v-if="false">
             <el-button type="primary" :loading="loading" @click="loadMore">加载更多</el-button>
+          </div>
+          <div class="scroll-more"
+            v-infinite-scroll="scrollMore"
+            infinite-scroll-disabled="busy"
+            infinite-scroll-distance="410"
+          >
+            <img src="/imgs/loading-svg/loading-spinning-bubbles.svg" alt="" v-show="loading">
           </div>
           <no-data v-if="!loading && list.length==0"></no-data>
         </div>
@@ -71,26 +78,35 @@
   import Loading from './../components/Loading'
   import NoData from './../components/NoData'
   import { Pagination,Button } from 'element-ui'
+  import infiniteScroll from 'vue-infinite-scroll'//滚动加载
   export default{
     name:'OrderList',
     data() {
       return {
         loading: false,
         list:[],//订单list
-        pageSize:3,//每个页大小pageSize
+        pageSize:5,//每个页大小pageSize
         pageNum:1,//分页
         total:0,//总数量
+        showNextPage:true,//加载更多：是否显示按钮
+        busy: false,//滚动加载，是否触发
       }
     },
     components: { Loading, NoData,
       [Pagination.name]:Pagination,
       [Button.name]:Button
     },
+    // 自定义指令 局部的
+    directives: {
+      infiniteScroll
+    },
     mounted() {
       this.getOrderList()
     },
     methods: {
       getOrderList(){
+        // 第一次请求的时候不触发滚动加载
+        this.busy = true;
         this.loading = true;
         this.axios.get('/orders',{
           params:{
@@ -104,9 +120,12 @@
           // 第二种加载更多按钮和第三种方法：滚动加载
           this.list = this.list.concat(res.list);
           this.total = res.total;
+          // 是否还有下一页
           this.showNextPage = res.hasNextPage;
+          this.busy = false
         }).catch(()=>{
           this.loading = false;
+          this.busy = false
         })
       },
       goPay(orderNo){
@@ -134,6 +153,33 @@
       loadMore(){
         this.pageNum++;
         this.getOrderList();
+      },
+      // 第三种方法：滚动加载，通过npm插件实现
+      scrollMore(){
+        this.busy = true;
+        setTimeout(()=>{
+          this.pageNum++;
+          this.getList();
+        },500);
+      },
+      // 专门给scrollMore使用
+      getList(){
+        this.loading = true;
+        this.axios.get('/orders',{
+          params:{
+            pageSize:this.pageSize,
+            pageNum:this.pageNum
+          }
+        }).then((res)=>{
+          this.list = this.list.concat(res.list);
+          this.loading = false;
+          if(res.hasNextPage){
+            // 没有下一页了 不让滚动加载
+            this.busy=false;
+          }else{
+            this.busy=true;
+          }
+        });
       },
   }
 }
