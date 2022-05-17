@@ -48,7 +48,16 @@
               </div>
             </div>
           </div>
-
+          <!-- 分页器和total总页数 每个页大小pageSize -->
+          <el-pagination
+            background
+            layout="prev, pager, next"
+            :pageSize="pageSize"
+            :total="total"
+            @current-change="handleChange"
+            class="pagination"
+          >
+          </el-pagination>
           <no-data v-if="!loading && list.length==0"></no-data>
         </div>
       </div>
@@ -58,6 +67,7 @@
 <script>
   import Loading from './../components/Loading'
   import NoData from './../components/NoData'
+  import { Pagination,Button } from 'element-ui'
   export default{
     name:'OrderList',
     data() {
@@ -69,9 +79,12 @@
         total:0,//总数量
       }
     },
-    components: { Loading, NoData},
+    components: { Loading, NoData,
+      [Pagination.name]:Pagination,
+      [Button.name]:Button
+    },
     mounted() {
-      // this.getOrderList()
+      this.getOrderList()
     },
     methods: {
       getOrderList(){
@@ -83,14 +96,15 @@
           }
         }).then((res)=>{
           this.loading = false;
-          this.list = this.list.concat(res.list);
+          // this.list = this.list.concat(res.list);
+          this.list = res.list
           this.total = res.total;
           this.showNextPage = res.hasNextPage;
         }).catch(()=>{
           this.loading = false;
         })
-    },
-    goPay(orderNo){
+      },
+      goPay(orderNo){
         // 三种路由跳转方式
         // this.$router.push('/order/pay')
         /*this.$router.push({
@@ -105,6 +119,11 @@
             orderNo
           }
         })
+      },
+      // 第一种方法：分页器
+      handleChange(pageNum){
+        this.pageNum = pageNum;
+        this.getOrderList();
       },
   }
 }
