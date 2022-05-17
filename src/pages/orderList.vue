@@ -49,7 +49,7 @@
             </div>
           </div>
           <!-- 分页器和total总页数 每个页大小pageSize -->
-          <el-pagination
+          <!-- <el-pagination
             background
             layout="prev, pager, next"
             :pageSize="pageSize"
@@ -57,7 +57,10 @@
             @current-change="handleChange"
             class="pagination"
           >
-          </el-pagination>
+          </el-pagination> -->
+          <div class="load-more" v-if="true">
+            <el-button type="primary" :loading="loading" @click="loadMore">加载更多</el-button>
+          </div>
           <no-data v-if="!loading && list.length==0"></no-data>
         </div>
       </div>
@@ -74,7 +77,7 @@
       return {
         loading: false,
         list:[],//订单list
-        pageSize:10,
+        pageSize:3,//每个页大小pageSize
         pageNum:1,//分页
         total:0,//总数量
       }
@@ -91,13 +94,15 @@
         this.loading = true;
         this.axios.get('/orders',{
           params:{
-            pageSize:10,
+            pageSize:this.pageSize,
             pageNum:this.pageNum
           }
         }).then((res)=>{
           this.loading = false;
-          // this.list = this.list.concat(res.list);
-          this.list = res.list
+          // 第一种方法：分页器
+          // this.list = res.list
+          // 第二种加载更多按钮和第三种方法：滚动加载
+          this.list = this.list.concat(res.list);
           this.total = res.total;
           this.showNextPage = res.hasNextPage;
         }).catch(()=>{
@@ -123,6 +128,11 @@
       // 第一种方法：分页器
       handleChange(pageNum){
         this.pageNum = pageNum;
+        this.getOrderList();
+      },
+      // 第二种方法：加载更多按钮
+      loadMore(){
+        this.pageNum++;
         this.getOrderList();
       },
   }
