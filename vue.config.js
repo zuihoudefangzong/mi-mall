@@ -7,7 +7,7 @@ module.exports ={
     devServer:{
         host:'localhost',
         // default port 8080
-        port:8081,
+        port:8080,
         // proxy代理
         // 这样就像访问自己接口
         // 实际是访问target的接口
@@ -25,5 +25,11 @@ module.exports ={
                 }
             },
         }
+    },
+    // 生产环境打包源码不在chrome里面搜索到源码
+    productionSourceMap: false,
+    chainWebpack: config => {
+      // 删除预加载
+      config.plugins.delete('prefetch')
     }
 }

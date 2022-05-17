@@ -49,7 +49,7 @@
             </div>
           </div>
           <!-- 分页器和total总页数 每个页大小pageSize -->
-          <!-- <el-pagination
+          <el-pagination
             background
             layout="prev, pager, next"
             :pageSize="pageSize"
@@ -57,7 +57,7 @@
             @current-change="handleChange"
             class="pagination"
           >
-          </el-pagination> -->
+          </el-pagination>
           <div class="load-more" v-if="false">
             <el-button type="primary" :loading="loading" @click="loadMore">加载更多</el-button>
           </div>
@@ -65,6 +65,7 @@
             v-infinite-scroll="scrollMore"
             infinite-scroll-disabled="busy"
             infinite-scroll-distance="410"
+            v-if="false"
           >
             <img src="/imgs/loading-svg/loading-spinning-bubbles.svg" alt="" v-show="loading">
           </div>
@@ -116,9 +117,9 @@
         }).then((res)=>{
           this.loading = false;
           // 第一种方法：分页器
-          // this.list = res.list
+          this.list = res.list
           // 第二种加载更多按钮和第三种方法：滚动加载
-          this.list = this.list.concat(res.list);
+          // this.list = this.list.concat(res.list);
           this.total = res.total;
           // 是否还有下一页
           this.showNextPage = res.hasNextPage;
