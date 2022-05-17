@@ -3,6 +3,7 @@
     <div class="wrapper">
       <div class="container">
         <div class="order-box">
+          <loading v-if="loading"></loading>
           <div class="order" v-for="(order, index) in list" :key="index" >
             <!-- 订单信息 -->
             <div class="order-title">
@@ -47,12 +48,16 @@
               </div>
             </div>
           </div>
+
+          <no-data v-if="!loading && list.length==0"></no-data>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+  import Loading from './../components/Loading'
+  import NoData from './../components/NoData'
   export default{
     name:'OrderList',
     data() {
@@ -64,8 +69,9 @@
         total:0,//总数量
       }
     },
+    components: { Loading, NoData},
     mounted() {
-      this.getOrderList()
+      // this.getOrderList()
     },
     methods: {
       getOrderList(){
@@ -80,6 +86,8 @@
           this.list = this.list.concat(res.list);
           this.total = res.total;
           this.showNextPage = res.hasNextPage;
+        }).catch(()=>{
+          this.loading = false;
         })
     },
     goPay(orderNo){
