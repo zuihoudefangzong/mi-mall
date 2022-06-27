@@ -1,6 +1,6 @@
 # mall
-在线链接:www.leaveheart.com
-[在线预览](https://www.leaveheart.com)
+在线链接:[https://www.leaveheart.com](https://www.leaveheart.com)
+{:target="_blank"}
 
 ## Project setup
 ```
