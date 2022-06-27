@@ -3,7 +3,8 @@
         <!-- login的header -->
         <div class="container">
             <a href="/#/index">
-                <img src="/imgs/login-logo.png">
+                <!-- <img src="/imgs/login-logo.png"> -->
+                <h1>博客注册登录</h1>
             </a>
         </div>
         <!-- 中间body包裹wrapper -->
@@ -29,8 +30,8 @@
                     </div>
                     <!-- tips 注册按钮register -->
                     <div class="tips">
-                        <div class="sms" @click="register">手机短信登录/注册</div>
-                        <div class="reg" @click="register">立即注册<span>|</span>忘记密码？</div>
+                        <div class="sms">手机短信登录/注册</div>
+                        <div class="reg">立即注册<span>|</span>忘记密码？</div>
                     </div>
                 </div>
             </div> 
@@ -57,8 +58,8 @@ export default {
     },
     data(){
         return {
-            username:this.$store.state.username || 'yeehua',
-            password:'Wjy84967..',
+            username:this.$store.state.username || 'ftptest',
+            password:'ftptest',
             // 后面会用userId当做cookies
             userId:'',
         }
@@ -96,23 +97,23 @@ export default {
         })
       },
       // 但没有写register页面
-      register(){
-          this.axios.post('/user/register',{
-              // 举个form表单提交的例子
-              username:'admin1',
-              password:'admin1',
-              email:'admin@163.com',
-          }).then((res)=>{
-              this.$message.success('注册成功')
-              // 先在main.js到导入vue-cookies expires过期时间
-              if(res) {
-                this.$cookie.set('userId',res.id,{expires:'Session'});
-              }
-              // to-do 保存用户名
-              // this.$router.push('/index');
+      // register(){
+      //     this.axios.post('/user/register',{
+      //         // 举个form表单提交的例子
+      //         username:'admin1',
+      //         password:'admin1',
+      //         email:'admin@163.com',
+      //     }).then((res)=>{
+      //         this.$message.success('注册成功')
+      //         // 先在main.js到导入vue-cookies expires过期时间
+      //         if(res) {
+      //           this.$cookie.set('userId',res.id,{expires:'Session'});
+      //         }
+      //         // to-do 保存用户名
+      //         // this.$router.push('/index');
               
-          })
-      }
+      //     })
+      // }
     }
 }
 </script>
@@ -122,8 +123,11 @@ export default {
 .login{
   &>.container{
     height:113px;
+    line-height: 113px;
+    text-align: center;
     a{
         display: inline-block;
+        
         img{
             width:auto;
             height:100%;
@@ -131,7 +135,7 @@ export default {
     }
   }
   .wrapper{
-    background:url('/imgs/login-bg.jpg') no-repeat center;
+    background-color: #f66385;
     .container{
       height:576px;
       .login-form{
@@ -142,8 +146,11 @@ export default {
         height:510px;
         background-color:#ffffff;
         position:absolute;
-        bottom:33px;
-        right:0;
+        // bottom:33px;
+        // right:0;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
         h3{
           line-height:23px;
           font-size:24px;
