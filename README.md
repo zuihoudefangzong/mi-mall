@@ -1,5 +1,5 @@
 # mall
-[在线浏览](www.leaveheart.com)
+www.leaveheart.com
 
 ## Project setup
 ```
